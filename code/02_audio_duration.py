@@ -1,10 +1,10 @@
 import os
 from natsort import natsorted
 
-input_folder = r'/Users/PhanithLIM/Downloads/untitled'
+input_folder = '/Users/PhanithLIM/Documents/05. Dataset/Speech Recognition/processing/aakanee'
 
 folders = os.listdir(input_folder)
-folders = [f for f in folders if os.path.isdir(os.path.join(input_folder, f))]
+folders = [folder for folder in os.listdir(input_folder) if os.path.isdir(os.path.join(input_folder, folder))]
 folders = natsorted(folders)
 list_duration = []
 
