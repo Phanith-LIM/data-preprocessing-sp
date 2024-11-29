@@ -22,3 +22,5 @@ for file in folder:
     for number in numbers:
         texts = texts.replace(number, tha.decimals.processor(number))
     with open(f'{path}/{file}', 'w', encoding='utf-8') as f:
+        f.write(texts)
+        print(f'{file} is converted to Khmer numbers')
