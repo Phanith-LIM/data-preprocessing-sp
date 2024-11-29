@@ -1,7 +1,7 @@
 import os
 from natsort import natsorted
 
-input_folder = r'/Users/PhanithLIM/Documents/05. Dataset/Speech Recognition/processing/ទស្សនៈព្រឹត្តិការណ៍ពិភពលោក'
+input_folder = r'/Users/PhanithLIM/Downloads/untitled'
 
 folders = os.listdir(input_folder)
 folders = [f for f in folders if os.path.isdir(os.path.join(input_folder, f))]
