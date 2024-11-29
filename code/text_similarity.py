@@ -39,7 +39,7 @@ for folder in folders:
 df = pd.DataFrame(info_list)
 df = df.sort_values('similarity', ascending=False)
 df = df[df['similarity'] > 40]
-df.to_csv('output/output.csv', index=False)
+df.to_csv('logs/log.csv', index=False)
 print('✅ - Done.')
 print('👉 - Check the output folder for the result.')
 
