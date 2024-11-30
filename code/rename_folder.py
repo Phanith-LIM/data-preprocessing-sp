@@ -15,11 +15,9 @@ start_from = para['start_from']
 # Get all folders and sort them alphabetically
 folders = [f for f in os.listdir(root_folder) if os.path.isdir(os.path.join(root_folder, f))]
 folders = sorted(folders)
-
-# Map old folder names to temporary letters
 folder_mapping = {old_name: letter for old_name, letter in zip(folders, string.ascii_lowercase)}
 
-# Prepare a PrettyTable for the summary
+
 table = PrettyTable()
 table.field_names = ["Folder", "Renamed"]
 

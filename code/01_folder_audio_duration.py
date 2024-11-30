@@ -1,6 +1,7 @@
 import os
 from natsort import natsorted
 import subprocess
+import statistics
 
 input_folder = '/Users/PhanithLIM/Documents/05. Dataset/Speech Recognition/processing/aakanee'
 files = os.listdir(input_folder)
@@ -13,7 +14,6 @@ grand_total_duration = 0
 for file in files:
     file_path = os.path.join(input_folder, file)
     try:
-        # Run ffprobe and get the duration
         result = subprocess.run(
             [
                 "ffprobe",
@@ -43,4 +43,18 @@ print(f'✅ - Total files: {len(files)}')
 grand_hours = int(grand_total_duration // 3600)
 grand_minutes = int((grand_total_duration % 3600) // 60)
 grand_seconds = int(grand_total_duration % 60)
-print(f'🎉 Grand Total Duration: {grand_hours} hours, {grand_minutes} minutes, {grand_seconds} seconds.')
+
+print(f'\n🎉 Grand Total Duration: {grand_hours} hours, {grand_minutes} minutes, {grand_seconds} seconds.')
+
+# Calculate and print statistics if there are valid durations
+if list_duration:
+    min_duration = min(list_duration)
+    max_duration = max(list_duration)
+    mean_duration = statistics.mean(list_duration)
+
+    print(f'📊 Statistics:')
+    print(f'   - Min Duration: {min_duration:.2f} seconds')
+    print(f'   - Max Duration: {max_duration:.2f} seconds')
+    print(f'   - Mean Duration: {mean_duration:.2f} seconds')
+else:
+    print("No valid durations found.")

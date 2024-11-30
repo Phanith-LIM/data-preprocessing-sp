@@ -5,11 +5,18 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "beautifulsoup4>=4.12.3",
+    "clint>=0.5.1",
     "ipykernel>=6.29.5",
     "natsort>=8.4.0",
     "pandas>=2.2.3",
     "pdf2image>=1.17.0",
     "pprintpp>=0.4.0",
     "prettytable>=3.12.0",
+    "pydantic>=2.10.2",
+    "pydub>=0.25.1",
+    "requests>=2.32.3",
     "tha>=0.1.4",
+    "tqdm>=4.67.1",
+    "wget>=3.2",
 ]
