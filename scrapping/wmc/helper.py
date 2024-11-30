@@ -63,7 +63,6 @@ def get_links(page_number: int, base_url: str, logs: bool = True) -> List['Artic
 def download_audio(url: str, output_path: str, filename: str):
     os.makedirs(output_path, exist_ok=True)
     file_path = os.path.join(output_path, filename)
-    print(f"Downloading to: {file_path}")  # Debugging line
     response = requests.get(url, stream=True)
     total_size_in_bytes = int(response.headers.get('content-length', 0))
     with open(file_path, 'wb') as file, tqdm(
