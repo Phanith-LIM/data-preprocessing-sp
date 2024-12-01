@@ -30,7 +30,6 @@ for index in range(start_from, end_at + 1):
         if meta.audio:
             audio_file_name = f'{file}.mp3'
             download_audio(meta.audio, f'{output_path}/{index}', audio_file_name)
-        
-        print()  # Add spacing for clarity between files
+        print()
 
     print(f'✅ **Page {index} has been downloaded successfully.**\n')

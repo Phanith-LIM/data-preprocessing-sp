@@ -65,18 +65,7 @@ def download_audio(url: str, output_path: str, filename: str):
     file_path = os.path.join(output_path, filename)
     response = requests.get(url, stream=True)
     total_size_in_bytes = int(response.headers.get('content-length', 0))
-    with open(file_path, 'wb') as file, tqdm(
-        desc=filename,
-        total=total_size_in_bytes,
-        unit='B',
-        unit_scale=True,
-        bar_format='{l_bar}{bar:20}{r_bar}{bar:-10b}'
-    ) as bar:
+    with open(file_path, 'wb') as file, tqdm(desc=filename, total=total_size_in_bytes, unit='B', unit_scale=True, bar_format='{l_bar}{bar:20}{r_bar}{bar:-10b}') as bar:
         for data in response.iter_content(chunk_size=1024):
             file.write(data)
             bar.update(len(data))
-
-# base_url = 'https://wmc.org.kh/%e1%9e%96%e1%9f%90%e1%9e%8f%e1%9f%8c%e1%9e%98%e1%9e%b6%e1%9e%93%e1%9e%87%e1%9e%b6%e1%9e%8f%e1%9e%b7'
-# start_from = 1
-# end_at = 2
-# links: ArticleModel = get_links(start_from, end_at, base_url)
