@@ -2,7 +2,7 @@ import os
 from natsort import natsorted
 import statistics
 
-input_folder = '/Users/PhanithLIM/Documents/04. Projects/data-preprocessing-sp/data/output'
+input_folder = 'output'
 folders = [f for f in os.listdir(input_folder) if os.path.isdir(os.path.join(input_folder, f))]
 folders = natsorted(folders)
 list_duration = []
