@@ -1,9 +1,10 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class ContentModel(BaseModel):
     title: str
     content: str
-    audio: str
+    audio: Optional[str]
     
 class ArticleModel(BaseModel):
     title: str

@@ -2,7 +2,6 @@ import os
 import hashlib
 
 def get_file_hash(file_path, hash_algo='sha256'):
-    """Generate a hash for the file using the specified hash algorithm (default is SHA256)."""
     hash_func = hashlib.new(hash_algo)
     with open(file_path, 'rb') as f:
         while chunk := f.read(8192): 
@@ -10,7 +9,6 @@ def get_file_hash(file_path, hash_algo='sha256'):
     return hash_func.hexdigest()
 
 def remove_duplicate_audio_files(directory):
-    """Remove duplicate audio files from the specified directory based on their content hash."""
     seen_hashes = set()  
     files_to_remove = []
 

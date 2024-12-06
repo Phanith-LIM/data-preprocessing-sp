@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from model import ContentModel, ArticleModel
 from typing import Optional, List
 import os
+import json
 from tqdm import tqdm
 import pandas as pd
 
@@ -10,17 +11,61 @@ def fetch_page_content(url_page: str) -> Optional[ContentModel]:
     try:
         html = requests.get(url_page).text
         soup = BeautifulSoup(html, 'html.parser')
-        title = soup.find('h2', class_='elementor-heading-title elementor-size-default').text.strip()
-        contents = soup.find('div', attrs={'data-id': '3435bb92'}).find_all('p')
-        audio_tag = soup.find('div', attrs={'data-id': '3435bb92'}).find('audio')
-        audio = audio_tag.find('a')['href'] if audio_tag else None
-        if not audio:
+        title_tag = soup.find('h2', class_='elementor-heading-title elementor-size-default')
+        title = title_tag.text.strip()
+    
+        if not title:
+            print(f"⚠️ Skipping article: Title not found.")
             return None
+
+        # content_div = soup.find('div', attrs={'data-id': '3435bb92'}) / 1 - 180
+        content_div = soup.find('div', attrs={'data-id': '3435bb92'})
+        if not content_div:
+            print(f"⚠️ Skipping article: Content div not found.")
+            return None
+
+        contents = content_div.find_all('p')
         save_content = ''
         for content in contents:
-            if content.text:
-                save_content += content.text + '\n'
-        return ContentModel(title=title, content=save_content, audio=audio)
+            if content.get('style') == 'text-align: center':
+                continue
+            if content.text.strip():
+                save_content += content.text.strip() + '\n'
+                
+        
+        audio = None
+        audio_tag = content_div.find('audio')
+        if audio_tag and audio_tag.find('a'):
+            audio = audio_tag.find('a')['href']
+        else:
+            figure_audio = content_div.find('figure', class_='wp-block-audio')
+            if figure_audio:
+                audio_tag = figure_audio.find('audio')
+                if audio_tag and audio_tag.has_attr('src'):
+                    audio = audio_tag['src']
+                    
+        if audio and audio.startswith("blob:"):
+            audio = audio.replace("blob:", "")
+            
+        if not audio:
+            script_tag = soup.find('script', class_='wp-playlist-script', type='application/json')
+            if script_tag:
+                try:
+                    json_data = json.loads(script_tag.string)
+                    tracks = json_data.get('tracks', [])
+                    if tracks:
+                        audio = tracks[0].get('src', None) 
+                except json.JSONDecodeError as e:
+                    print(f"⚠️ Error decoding JSON from <script> tag: {e}")
+                    
+        if audio and audio.startswith("blob:"):
+            audio = audio.replace("blob:", "")
+            
+        if not audio:
+            return None
+        
+        return ContentModel(title=title, content=save_content.strip(), audio=audio)
+
     except AttributeError as e:
         print(f"⚠️ Error processing the page: {e} 🤦‍♂️")
         return None
@@ -30,6 +75,7 @@ def fetch_page_content(url_page: str) -> Optional[ContentModel]:
     except Exception as e:
         print(f"❗ Unexpected error: {e} 🚨")
         return None
+
 
 
 def get_links(page_number: int, base_url: str, logs: bool = True) -> List['ArticleModel']:
@@ -44,16 +90,16 @@ def get_links(page_number: int, base_url: str, logs: bool = True) -> List['Artic
     soup = BeautifulSoup(response.text, 'html.parser')
     items = soup.find('div', class_='elementor-posts-container').find_all('article')
     for item in items:
-        title = item.find('h3', class_='elementor-post__title').text if soup.find('h3', class_='elementor-post__title') else None
-        date = item.find('div', class_='elementor-post__meta-data').find('span', class_='elementor-post-date').text if soup.find('div', class_='elementor-post__meta-data') else None
-        author = item.find('div', class_='elementor-post__meta-data').find('span', class_='elementor-post-author').text if soup.find('div', class_='elementor-post__meta-data') else None
-        link = item.find('a')['href'] if soup.find('a') else None
-        title = title.strip() if title else None
-        date = date.strip() if date else None
-        author = author.strip() if author else None
-        link = link.strip() if link else None
+        title = item.find('h3', class_='elementor-post__title').text
+        date = item.find('div', class_='elementor-post__meta-data').find('span', class_='elementor-post-date').text
+        author = item.find('div', class_='elementor-post__meta-data').find('span', class_='elementor-post-author').text
+        link = item.find('a')['href']
+        title = title.strip()
+        date = date.strip()
+        author = author.strip()
+        link = link.strip()
             
-        model = ArticleModel(title=title, date=date, author=author, link=link if item else None)
+        model = ArticleModel(title=title, date=date, author=author, link=link)
         links.append(model)
     if logs:
         df = pd.DataFrame([link.model_dump() for link in links])
@@ -69,3 +115,6 @@ def download_audio(url: str, output_path: str, filename: str):
         for data in response.iter_content(chunk_size=1024):
             file.write(data)
             bar.update(len(data))
+            
+data: Optional[ContentModel] = fetch_page_content('https://wmc.org.kh/article/85092/%e1%9e%9f%e1%9e%98%e1%9f%92%e1%9e%8a%e1%9f%81%e1%9e%85%e1%9e%a0%e1%9f%8a%e1%9e%bb%e1%9e%93%e1%9e%9f%e1%9f%82%e1%9e%93%e1%9e%85%e1%9f%92%e1%9e%9a%e1%9e%b6%e1%9e%93%e1%9e%85%e1%9f%84%e1%9e%9b%e1%9e%96/')
+print(data)
