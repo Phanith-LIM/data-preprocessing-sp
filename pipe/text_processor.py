@@ -2,9 +2,26 @@ import re
 import os
 from natsort import natsorted
 from tha.decimals import processor
-from helper.io import get_first_line, remove_first_line, read_text_file, write_text_file
-from helper.remove_symbol import process_content
 import pandas as pd
+
+def read_text_file(file_path):
+    with open(file_path, 'r') as f:
+        return f.read()
+
+def write_text_file(file_path, content):
+    with open(file_path, 'w') as f:
+        f.write(content)
+
+
+def get_first_line(path: str) -> str:
+    with open(path, 'r') as f:
+        return f.readline().strip()
+
+def remove_first_line(path: str) -> None:
+    with open(path, 'r') as f:
+        lines = f.readlines()
+    with open(path, 'w') as f:
+        f.writelines(lines[1:])
 
 def replace_khmer_numbers(content, pattern):
     def convert_number(match):
@@ -15,9 +32,26 @@ def replace_khmer_numbers(content, pattern):
 def process_file(folder_name: str, khmer_number_pattern: str):
     content = read_text_file(folder_name)
     content = process_content(content)
-    content = replace_khmer_numbers(content, khmer_number_pattern)
-    content = content.replace('▁', '')
+    # content = replace_khmer_numbers(content, khmer_number_pattern)
+    # content = content.replace('▁', '')
     write_text_file(folder_name, content)
+
+def process_content(content):
+    symbols_to_remove = [
+        '(', ')', '[', ']', '{', '}', '<', '>', 
+        '“', '”', '‘', '’', '«', '»', ',',
+        '「', '」', '『', '』', '▁', '-',
+        '៖', '៛', '​', '–', '​'
+    ]
+    for symbol in symbols_to_remove:
+        content = content.replace(symbol, '')
+    content = content.replace('៛', 'រៀល')
+    content = content.replace('%', 'ភាគរយ')
+    content = content.replace('%', 'ភាគរយ')
+    content = content.replace('៕', '។')
+    # content = content.replace('.', 'ចុច')
+    content = ''.join(char.lower() if 'A' <= char <= 'Z' else char for char in content)
+    return content
 
 def process_log_file(log_file: str, output_path: str):
     df = pd.read_csv(log_file)
@@ -42,7 +76,7 @@ def process_log_file(log_file: str, output_path: str):
         df.to_csv(output_path, index=False)
 
 if __name__ == '__main__':
-    number_page = 4
+    number_page = 17
     path = f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/clean/{number_page}'
     log_path = f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/logs/{number_page}.csv'
     output_path = f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/clean-logs/{number_page}.csv'

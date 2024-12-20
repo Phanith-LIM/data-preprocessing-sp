@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 from prettytable import PrettyTable
 
-input_folder = '/Users/PhanithLIM/Documents/04.Projects/data-preprocessing-sp/output'
+input_folder = '/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/clean/untitled folder'
 folders = [f for f in os.listdir(input_folder) if os.path.isdir(os.path.join(input_folder, f))]
 folders = natsorted(folders)
 
@@ -20,6 +20,8 @@ meta_data = []
 grand_total_duration = 0
 grand_text_count = 0
 grand_audio_count = 0
+
+list_error = []
 
 # Process each folder
 for i, folder in enumerate(folders, 1):
@@ -43,11 +45,15 @@ for i, folder in enumerate(folders, 1):
                 total_duration += duration_float
                 list_duration.append(duration_float)
             except ValueError:
+                body = {
+                    "Folder": folder,
+                    "File": file,
+                }
+                list_error.append(body)
                 print(f"❌ - Invalid duration for {file}")
         else:
             print(f"❌ - Could not get duration for {file}")
-
-    # Convert total_duration from seconds to hours, minutes, and seconds
+            
     hours = int(total_duration // 3600)
     minutes = int((total_duration % 3600) // 60)
     seconds = int(total_duration % 60)
@@ -58,13 +64,13 @@ for i, folder in enumerate(folders, 1):
     grand_text_count += text_count
     grand_audio_count += audio_count
     body = {
-        "Folder": i,
-        "Duration": duration_str
+        "Folder": folder,
+        "Duration": duration_str,
     }
     meta_data.append(body)
-    table.add_row([i, duration_str])
+    table.add_row([folder, duration_str])
     os.system('clear')
-    print(f"✅ - {i}: {duration_str}\n")
+    print(f"✅ - {folder}: {duration_str}\n")
     print(table)
 
 # Grand summary
@@ -92,6 +98,9 @@ if list_duration:
     print(f"📊 Minimum Duration: {min_duration_str}")
     print(f"📊 Maximum Duration: {max_duration_str}")
     print(f"📊 Mean Duration: {mean_duration_str}")
+    
+    df = pd.DataFrame(list_error)
+    df.to_csv('logs/error_duration.csv', index=False)
 
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     df = pd.DataFrame(meta_data)

@@ -4,8 +4,8 @@ from prettytable import PrettyTable
 
 # Define parameters in a dictionary
 para = {
-    'root_folder': r'/Users/PhanithLIM/Downloads/data',
-    'start_from': 3
+    'root_folder': r'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/clean/WMC-International copy/7',
+    'start_from': 38
 }
 
 # Extract parameters

@@ -1,9 +1,18 @@
 import os
 from natsort import natsorted
 import pandas as pd
-from helper.io import get_first_line, remove_first_line
 
-number_page = 4
+def get_first_line(path: str) -> str:
+    with open(path, 'r') as f:
+        return f.readline().strip()
+
+def remove_first_line(path: str) -> None:
+    with open(path, 'r') as f:
+        lines = f.readlines()
+    with open(path, 'w') as f:
+        f.writelines(lines[1:])
+
+number_page = 6
 path = f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/clean/{number_page}'
 path_csv = f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/clean-logs/{number_page}.csv'
 
