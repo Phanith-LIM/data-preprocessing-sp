@@ -76,7 +76,7 @@ def process_log_file(log_file: str, output_path: str):
         df.to_csv(output_path, index=False)
 
 if __name__ == '__main__':
-    number_page = 17
+    number_page = 50
     path = f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/clean/{number_page}'
     log_path = f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/logs/{number_page}.csv'
     output_path = f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/clean-logs/{number_page}.csv'
@@ -85,5 +85,5 @@ if __name__ == '__main__':
     files = [os.path.join(path, f) for f in natsorted(os.listdir(path)) if f.endswith('.txt')]
     for file in files:
         process_file(folder_name=file, khmer_number_pattern=khmer_num_pattern)
-    process_log_file(log_file=log_path, output_path=output_path)
+    # process_log_file(log_file=log_path, output_path=output_path)
     print('Done')

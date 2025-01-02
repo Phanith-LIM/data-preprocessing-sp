@@ -40,6 +40,6 @@ def process_folder(input_folder, output_folder):
         print(f"Error processing folder: {e}")
 
 # Example usage
-input_folder = '/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/Testset/sermo'  # Replace with your input folder path
-output_folder = '/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/Testset/output' # Replace with your output folder path
+input_folder = '/Users/PhanithLIM/Downloads/vannda copy'  # Replace with your input folder path
+output_folder = 'output'
 process_folder(input_folder, output_folder)

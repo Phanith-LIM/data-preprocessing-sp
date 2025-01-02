@@ -3,7 +3,7 @@ from natsort import natsorted
 import subprocess
 import statistics
 
-input_folder = '/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/output/13'
+input_folder = '/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/untitled folder/111'
 files = os.listdir(input_folder)
 files = natsorted(files)
 files = [f for f in files if f.endswith('.wav') or f.endswith('.mp3')]

@@ -4,8 +4,7 @@ from natsort import natsorted
 import pandas as pd
 from datetime import datetime
 from prettytable import PrettyTable
-
-input_folder = '/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/clean/untitled folder'
+input_folder = '/Users/PhanithLIM/Documents/04.Projects/data-preprocessing-sp/scrapping/ams/output'
 folders = [f for f in os.listdir(input_folder) if os.path.isdir(os.path.join(input_folder, f))]
 folders = natsorted(folders)
 

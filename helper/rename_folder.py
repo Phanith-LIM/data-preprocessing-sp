@@ -3,8 +3,9 @@ import string
 from prettytable import PrettyTable
 
 # Define parameters in a dictionary
+number = 69
 para = {
-    'root_folder': r'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/clean/WMC-International copy/7',
+    'root_folder': f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/clean/WMC-clean/WMC-short/{number}',
     'start_from': 38
 }
 
