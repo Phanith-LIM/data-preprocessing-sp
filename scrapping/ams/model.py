@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import List
 
-
 class AMSArticleModel(BaseModel):
     title: str
     audio_src: str
