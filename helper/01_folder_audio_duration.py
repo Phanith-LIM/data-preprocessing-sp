@@ -3,7 +3,7 @@ from natsort import natsorted
 import subprocess
 import statistics
 
-input_folder = '/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/untitled folder/111'
+input_folder = '/Users/PhanithLIM/Documents/03.Programming/Python/label_audio/output'
 files = os.listdir(input_folder)
 files = natsorted(files)
 files = [f for f in files if f.endswith('.wav') or f.endswith('.mp3')]
@@ -34,6 +34,13 @@ for file in files:
             grand_total_duration += total_duration
         else:
             print(f"❌ - Could not get duration for {file}")
+        
+        hours = int(total_duration // 3600)
+        minutes = int((total_duration % 3600) // 60)
+        seconds = int(total_duration % 60)
+        duration_str = f"{hours}h {minutes}m {seconds}s"
+        print(f"✅ - {file}: {duration_str}")
+        
     except Exception as e:
         print(f"❌ - Error processing {file}: {e}")
 
