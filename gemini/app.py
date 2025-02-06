@@ -6,7 +6,7 @@ from helper import extract_words_from_files
 
 
 page_number = 4
-genai.configure(api_key="AIzaSyD4kqitcArZHi9qESXwA24a6XsqCQKlKj8")
+genai.configure(api_key="HELLOWORLD")
 path = f'/Users/PhanithLIM/Documents/05.Dataset/Speech Recognition/processing/WMC-Internation/clean/{page_number}'
 
 # Create the model
